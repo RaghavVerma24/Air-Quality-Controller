@@ -80,7 +80,7 @@ void ssd1306_Startup() {
 
 /*
 	Ohms Law:
-	V = IR
+	Equation: V = IR
 
 	1. OLED
 	Find resistance:
