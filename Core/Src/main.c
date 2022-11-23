@@ -83,6 +83,159 @@ void ssd1306_Startup() {
 	  return;
 }
 
+void Program() {
+	ssd1306_Fill(White);
+
+	    uint32_t start = HAL_GetTick();
+	    uint32_t end = start;
+	    int fps = 0;
+	    char message[200][15] = {"468.04ppm         ",
+	    		"378.88ppm         ",
+	    		"456.62ppm         ",
+	    		"459.69ppm         ",
+	    		"482.33ppm         ",
+	    		"339.51ppm         ",
+	    		"367.04ppm         ",
+	    		"453.65ppm         ",
+	    		"355.55ppm         ",
+	    		"410.79ppm         ",
+	    		"395.48ppm         ",
+	    		"425.77ppm         ",
+	    		"372.96ppm         ",
+	    		"402.68ppm         ",
+	    		"490.45ppm         ",
+	    		"483.24ppm         ",
+	    		"427.14ppm         ",
+	    		"443.46ppm         ",
+	    		"328.32ppm         ",
+	    		"421.39ppm         ",
+	    		"303.26ppm         ",
+	    		"348.58ppm         ",
+	    		"327.45ppm         ",
+	    		"460.84ppm         ",
+	    		"331.34ppm         ",
+	    		"380.19ppm         ",
+	    		"325.96ppm         ",
+	    		"321.76ppm         ",
+	    		"499.78ppm         ",
+	    		"343.65ppm         ",
+	    		"402.59ppm         ",
+	    		"467.82ppm         ",
+	    		"422.53ppm         ",
+	    		"359.21ppm         ",
+	    		"427.51ppm         ",
+	    		"404.86ppm         ",
+	    		"398.72ppm         ",
+	    		"494.55ppm         ",
+	    		"358.50ppm         ",
+	    		"454.27ppm         ",
+	    		"405.35ppm         ",
+	    		"453.98ppm         ",
+	    		"380.05ppm         ",
+	    		"478.31ppm         ",
+	    		"356.66ppm         ",
+	    		"370.49ppm         ",
+	    		"461.54ppm         ",
+	    		"483.81ppm         ",
+	    		"313.95ppm         ",
+	    		"489.87ppm         ",
+	    		"405.20ppm         ",
+	    		"317.21ppm         ",
+	    		"338.44ppm         ",
+	    		"432.65ppm         ",
+	    		"478.05ppm         ",
+	    		"369.78ppm         ",
+	    		"312.83ppm         ",
+	    		"304.00ppm         ",
+	    		"391.54ppm         ",
+	    		"312.62ppm         ",
+	    		"347.66ppm         ",
+	    		"494.13ppm         ",
+	    		"480.44ppm         ",
+	    		"470.18ppm         ",
+	    		"353.33ppm         ",
+	    		"407.95ppm         ",
+	    		"375.04ppm         ",
+	    		"452.05ppm         ",
+	    		"402.51ppm         ",
+	    		"433.54ppm         ",
+	    		"406.32ppm         ",
+	    		"307.86ppm         ",
+	    		"387.53ppm         ",
+	    		"486.37ppm         ",
+	    		"486.16ppm         ",
+	    		"444.19ppm         ",
+	    		"356.86ppm         ",
+	    		"447.71ppm         ",
+	    		"428.00ppm         ",
+	    		"370.81ppm         ",
+	    		"437.57ppm         ",
+	    		"333.19ppm         ",
+	    		"388.02ppm         ",
+	    		"476.02ppm         ",
+	    		"465.84ppm         ",
+	    		"366.07ppm         ",
+	    		"345.79ppm         ",
+	    		"478.67ppm         ",
+	    		"370.07ppm         ",
+	    		"437.33ppm         ",
+	    		"491.29ppm         ",
+	    		"417.73ppm         ",
+	    		"431.46ppm         ",
+	    		"471.74ppm         ",
+	    		"387.91ppm         ",
+	    		"484.79ppm         ",
+	    		"379.69ppm         ",
+	    		"462.95ppm         ",
+	    		"436.84ppm         ",
+	    		"482.19ppm         "};
+
+	    ssd1306_SetCursor(2,0);
+	    ssd1306_WriteString("Air Quality", Font_11x18, Black);
+	    ssd1306_SetCursor(2, 18*2);
+
+	    int count = 0;
+
+	    do {
+//	        char ch = message[0];
+//	        memmove(message, message+1, sizeof(message)-2);
+//	        message[sizeof(message)-2] = ch;
+
+	    	for (int i = 0; i < 10000; i++) {
+	    		ssd1306_SetCursor(2, 18);
+	    		ssd1306_WriteString(message[rand() % 100], Font_11x18, Black);
+	    		HAL_Delay(3000);
+	    		ssd1306_UpdateScreen();
+	    	}
+//	        if (count % 2) {
+//	        	ssd1306_SetCursor(2, 18);
+//	        	ssd1306_WriteString(message, Font_11x18, Black);
+//	        	HAL_Delay(1000);
+//	        	ssd1306_UpdateScreen();
+//	        } else {
+//	        	ssd1306_SetCursor(2, 18);
+//	        	ssd1306_WriteString("101", Font_11x18, Black);
+//	        	HAL_Delay(1000);
+//	        	ssd1306_UpdateScreen();
+//	        }
+
+	        fps++;
+	        count++;
+	        end = HAL_GetTick();
+	    } while((end - start) < 50000000);
+
+	    HAL_Delay(50000000);
+
+	    char buff[64];
+	    fps = (float)fps / ((end - start) / 1000.0);
+	    snprintf(buff, sizeof(buff), "~%d FPS", fps);
+
+	    ssd1306_Fill(White);
+	    ssd1306_SetCursor(2, 2);
+	    ssd1306_WriteString(buff, Font_11x18, Black);
+	    ssd1306_UpdateScreen();
+}
+
 int main(void)
 {
   /* USER CODE BEGIN 1 */
