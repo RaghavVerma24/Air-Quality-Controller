@@ -83,112 +83,31 @@ void ssd1306_Startup() {
 	  return;
 }
 
+void MQ135_Read (void)
+{
+	int hadc1 = 0;
+	int32_t sensorValue, gasreading;
+	HAL_ADC_Start(&hadc1);
+	if(HAL_ADC_PollForConversion(&hadc1, 100) == HAL_OK)
+	{
+	    sensorValue = (int32_t)HAL_ADC_GetValue(&hadc1);
+	    HAL_ADC_Stop(&hadc1);
+	    sensorValue = sensorValue * 2.5 / 5;
+	    gasreading = (int32_t)((sensorValue - 2.5) / 5 + 25);
+	}
+	else
+	{
+	    gasreading = -273;
+	}
+}
+
 void Program() {
 	ssd1306_Fill(White);
 
 	    uint32_t start = HAL_GetTick();
 	    uint32_t end = start;
 	    int fps = 0;
-	    char message[200][15] = {"468.04ppm         ",
-	    		"378.88ppm         ",
-	    		"456.62ppm         ",
-	    		"459.69ppm         ",
-	    		"482.33ppm         ",
-	    		"339.51ppm         ",
-	    		"367.04ppm         ",
-	    		"453.65ppm         ",
-	    		"355.55ppm         ",
-	    		"410.79ppm         ",
-	    		"395.48ppm         ",
-	    		"425.77ppm         ",
-	    		"372.96ppm         ",
-	    		"402.68ppm         ",
-	    		"490.45ppm         ",
-	    		"483.24ppm         ",
-	    		"427.14ppm         ",
-	    		"443.46ppm         ",
-	    		"328.32ppm         ",
-	    		"421.39ppm         ",
-	    		"303.26ppm         ",
-	    		"348.58ppm         ",
-	    		"327.45ppm         ",
-	    		"460.84ppm         ",
-	    		"331.34ppm         ",
-	    		"380.19ppm         ",
-	    		"325.96ppm         ",
-	    		"321.76ppm         ",
-	    		"499.78ppm         ",
-	    		"343.65ppm         ",
-	    		"402.59ppm         ",
-	    		"467.82ppm         ",
-	    		"422.53ppm         ",
-	    		"359.21ppm         ",
-	    		"427.51ppm         ",
-	    		"404.86ppm         ",
-	    		"398.72ppm         ",
-	    		"494.55ppm         ",
-	    		"358.50ppm         ",
-	    		"454.27ppm         ",
-	    		"405.35ppm         ",
-	    		"453.98ppm         ",
-	    		"380.05ppm         ",
-	    		"478.31ppm         ",
-	    		"356.66ppm         ",
-	    		"370.49ppm         ",
-	    		"461.54ppm         ",
-	    		"483.81ppm         ",
-	    		"313.95ppm         ",
-	    		"489.87ppm         ",
-	    		"405.20ppm         ",
-	    		"317.21ppm         ",
-	    		"338.44ppm         ",
-	    		"432.65ppm         ",
-	    		"478.05ppm         ",
-	    		"369.78ppm         ",
-	    		"312.83ppm         ",
-	    		"304.00ppm         ",
-	    		"391.54ppm         ",
-	    		"312.62ppm         ",
-	    		"347.66ppm         ",
-	    		"494.13ppm         ",
-	    		"480.44ppm         ",
-	    		"470.18ppm         ",
-	    		"353.33ppm         ",
-	    		"407.95ppm         ",
-	    		"375.04ppm         ",
-	    		"452.05ppm         ",
-	    		"402.51ppm         ",
-	    		"433.54ppm         ",
-	    		"406.32ppm         ",
-	    		"307.86ppm         ",
-	    		"387.53ppm         ",
-	    		"486.37ppm         ",
-	    		"486.16ppm         ",
-	    		"444.19ppm         ",
-	    		"356.86ppm         ",
-	    		"447.71ppm         ",
-	    		"428.00ppm         ",
-	    		"370.81ppm         ",
-	    		"437.57ppm         ",
-	    		"333.19ppm         ",
-	    		"388.02ppm         ",
-	    		"476.02ppm         ",
-	    		"465.84ppm         ",
-	    		"366.07ppm         ",
-	    		"345.79ppm         ",
-	    		"478.67ppm         ",
-	    		"370.07ppm         ",
-	    		"437.33ppm         ",
-	    		"491.29ppm         ",
-	    		"417.73ppm         ",
-	    		"431.46ppm         ",
-	    		"471.74ppm         ",
-	    		"387.91ppm         ",
-	    		"484.79ppm         ",
-	    		"379.69ppm         ",
-	    		"462.95ppm         ",
-	    		"436.84ppm         ",
-	    		"482.19ppm         "};
+	    char message[] = {"0"};
 
 	    ssd1306_SetCursor(2,0);
 	    ssd1306_WriteString("Air Quality", Font_11x18, Black);
